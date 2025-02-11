@@ -12,5 +12,5 @@ import pytorch_openreg
 import torch
 from torch.testing._internal.common_utils import run_tests, TestCase
 
-tensor = torch.Tensor(1,2).to('new_one')
+tensor = torch.Tensor(1,2).to('openreg')
 print(tensor)
