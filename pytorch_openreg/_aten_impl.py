@@ -40,14 +40,14 @@ def _openreg_kernel_fallback(op, *args, **kwargs):
     if op is torch.ops.aten._copy_from.default:
         from_, to_ = args
         if from_.device.type == to_.device.type:
-            assert from_.device.type == "agic"
+            assert from_.device.type == "openreg"
             op = torch.ops.aten.copy_.default
             # handled below as a regular copy
-        elif from_.device.type == "agic":
+        elif from_.device.type == "openreg":
             args, _ = prepare_for_sending((from_,), {})
             host_mem = daemon.exec("send_data", *args)
             return to_.copy_(host_mem)
-        elif to_.device.type == "agic":
+        elif to_.device.type == "openreg":
             args, _ = prepare_for_sending((to_,), {})
             daemon.exec("recv_data", from_, *args)
             return to_
@@ -120,7 +120,7 @@ def _openreg_kernel_fallback(op, *args, **kwargs):
             meta_res = op(*meta_args, **meta_kwargs)
 
             # 2. Allocate the output
-            real_res, _ = to_device_no_copy("agic", meta_res, {})
+            real_res, _ = to_device_no_copy("openreg", meta_res, {})
         else:
             # Slow version for data-dependent functions:
             # Run the op on the device just to get the output shape
