@@ -16,5 +16,5 @@ class _OpenRegMod:
 
 
 # Set all the appropriate state on PyTorch
-torch.utils.rename_privateuse1_backend("agic")
-torch._register_device_module("agic", _OpenRegMod())
+torch.utils.rename_privateuse1_backend("openreg")
+torch._register_device_module("openreg", _OpenRegMod())
